@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "825708130964",
+    "project_id": "tonow-b126e",
+    "storage_bucket": "tonow-b126e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825708130964:android:2705b50289695990e53a81",
+        "android_client_info": {
+          "package_name": "com.jesiel364.tonowapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825708130964-r1ithmo9k4k65agcv707u8hhtf985tu6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jesiel364.tonowapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "825708130964-055vrnq0oslapbq9jne0fn45n6oi47ns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPNp5U-ciWhBNs8sTUbyacB_Br90QUt5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825708130964-055vrnq0oslapbq9jne0fn45n6oi47ns.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "825708130964-d7ulre0uslhdp5fivna2tfnvukl5bgmh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jesiel364.tonowapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
