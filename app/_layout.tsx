@@ -4,7 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { getApp } from '@react-native-firebase/app';
+import { FirebaseAuthTypes, getAuth } from '@react-native-firebase/auth';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
@@ -24,12 +25,17 @@ export default function RootLayout() {
   };
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    // Modo v22 - usando getApp()
+    const app = getApp();
+    const authInstance = getAuth(app);
+    const subscriber = authInstance.onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);
 
+  // Resto do código igual...
   useEffect(() => {
     if (initializing) return
+    console.log(segments)
     const isAuthRoute = segments[0] === '(auth)';
     if (user && !isAuthRoute) {
       router.replace('/(auth)/home');
@@ -49,7 +55,6 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
