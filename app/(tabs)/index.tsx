@@ -1,3 +1,4 @@
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image } from 'expo-image';
 import { ActivityIndicator, Button, KeyboardAvoidingView, StyleSheet, TextInput } from 'react-native';
 
@@ -8,6 +9,12 @@ import { ThemedView } from '@/components/ThemedView';
 import { FirebaseError } from '@firebase/util';
 import auth from '@react-native-firebase/auth';
 import { useState } from 'react';
+
+GoogleSignin.configure({
+  webClientId: '825708130964-055vrnq0oslapbq9jne0fn45n6oi47ns.apps.googleusercontent.com',
+  offlineAccess: true,
+  forceCodeForRefreshToken: true,
+});
 
 export default function HomeScreen() {
   const [email, setEmail] = useState<string>('');
@@ -35,6 +42,22 @@ export default function HomeScreen() {
     } catch (e: any) {
       const err = e as FirebaseError;
       alert('Sign In failed: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    setLoading(true);
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const idToken = userInfo.idToken;
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      await auth().signInWithCredential(googleCredential);
+      alert('Login com Google realizado!');
+    } catch (e: any) {
+      alert('Erro ao fazer login com Google: ' + e.message);
     } finally {
       setLoading(false);
     }
@@ -87,6 +110,12 @@ export default function HomeScreen() {
               <Button
                 title="Create Account"
                 onPress={signUp}
+                disabled={loading}
+              />
+
+              <Button
+                title="Login with Google"
+                onPress={signInWithGoogle}
                 disabled={loading}
               /></>
             

@@ -1,7 +1,7 @@
 import { getApp } from '@react-native-firebase/app';
 import { FirebaseAuthTypes, getAuth } from '@react-native-firebase/auth';
 import { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Image, Text, View } from "react-native";
 
 const Page = () => {
     const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
@@ -30,6 +30,20 @@ const Page = () => {
             <Text style={{
                 color: '#FFF',
             }}>Welcome back {user?.email}</Text>
+            <Text style={{
+                color: '#FFF',
+            }}>{user?.displayName}</Text>
+            
+            {
+                user?.photoURL ? (
+                    <Image
+                        source={{ uri: user.photoURL }}
+                        style={{ width: 100, height: 100, borderRadius: 50, marginTop: 10 }}
+                    />
+                ) : (
+                    <Text style={{ color: '#FFF', marginTop: 10 }}>No profile picture</Text>
+                )
+            }
 
             <Button
                 title="Sign Out"
