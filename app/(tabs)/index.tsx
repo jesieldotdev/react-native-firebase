@@ -7,7 +7,8 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { FirebaseError } from '@firebase/util';
-import auth from '@react-native-firebase/auth';
+import { getApp } from '@react-native-firebase/app';
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword } from '@react-native-firebase/auth';
 import { useState } from 'react';
 
 GoogleSignin.configure({
@@ -21,10 +22,13 @@ export default function HomeScreen() {
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
+  const app = getApp();
+  const auth = getAuth(app);
+
   const signUp = async () => {
     setLoading(true);
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       alert('Check your email for verification');
     } catch (e: any) {
       const err = e as FirebaseError;
@@ -37,7 +41,7 @@ export default function HomeScreen() {
   const signIn = async () => {
     setLoading(true);
     try {
-      await auth().signInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       alert('Check your email for verification');
     } catch (e: any) {
       const err = e as FirebaseError;
@@ -53,11 +57,16 @@ export default function HomeScreen() {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const idToken = userInfo.idToken;
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      await auth().signInWithCredential(googleCredential);
+      if (!idToken) {
+        throw new Error('ID Token do Google não encontrado. Verifique a configuração do webClientId.');
+      }
+      console.log('Google ID Token:', idToken);
+      const googleCredential = GoogleAuthProvider.credential(idToken);
+      await signInWithCredential(auth, googleCredential);
       alert('Login com Google realizado!');
     } catch (e: any) {
       alert('Erro ao fazer login com Google: ' + e.message);
+      console.log('Erro ao fazer login com Google: ' + e.message);
     } finally {
       setLoading(false);
     }
